@@ -3,10 +3,11 @@
 node_t::node_t()
 {}
 
-node_t::node_t(int nombre)
+node_t::node_t(int nombre, int coste_heuristico)
 {
   // cout << "El nombre es: " << nombre << endl;
   set_name(nombre);
+  set_coste_heuristico(coste_heuristico);
 }
 
 int node_t::get_name(void)
@@ -18,6 +19,16 @@ void node_t::set_name(int nombre)
 {
   // cout << "Entro nodo set_name(1)." << endl;
   name_ = nombre;
+}
+
+void node_t::set_coste_heuristico(int vector_heuristico)
+{
+  coste_heuristico_ = vector_heuristico;
+}
+
+int node_t::get_coste_heuristico(void)
+{
+  return coste_heuristico_;
 }
 
 void node_t::set_hijo(node_t *hijo, int value)
@@ -48,5 +59,6 @@ ostream& node_t::write(ostream& os)
   {
     cout << "\t\t" << next_nodes_[i].first->get_name() << '|' << next_nodes_[i].second << endl;
   }
+  cout << "\tSu valor heuristico es: " << coste_heuristico_ << endl;
   cout << endl;
 }

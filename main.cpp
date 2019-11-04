@@ -1,4 +1,4 @@
-#include "arbol_t.hpp"
+#include "a_star_t.hpp"
 #include <fstream>
 #include <locale>
 #include <algorithm>
@@ -34,25 +34,17 @@ void formatear_vector(vector<int> vector_formatear, vector<vector<int>> &vector_
   }
 }
 
-
-
-
-int main (int argc, char** argv)      //pongo char** para que almacene los nombres correctamente
+int leer_ficheros(ifstream& graph_file, ifstream& heuristic_file, int& tam, vector<int>& vector_int_aux, vector<int>& vector_heuristica)
 {
-  cout << "Bienvenido" << endl;
+  string graph_line, graph_line_fixed, heuristic_line, heuristic_line_fixed, string_aux;    //Variables para almacenar contenido fichero y formatearlo
+  int int_aux = 0, int_dummy = 0, cont = 0, tam_heur = 0;                  //Variables de tamaño, y auxiliares
 
-  ifstream graph_file(argv[1]), heuristic_file;                       //Variables con los ficheros
-  string graph_line, graph_line_fixed, heuristic_line, string_aux;    //Variables para almacenar contenido fichero y formatearlo
-  int tam = 0, int_aux = 0, int_dummy = 0, cont = 0;                  //Variables de tamaño, y auxiliares
+  graph_file >> tam;
+  heuristic_file >> tam_heur;
 
-  if(graph_file.is_open())        //Comprobar que el fichero este abierto
+  if(tam == tam_heur)
   {
-    graph_file >> tam;
-    // cout << "Tamaño: " << tam << endl;
-
     int int_max = numeric_limits<int>::max();
-    vector<vector<int>> nodos_fichero(tam, vector<int>(tam - 1));
-    // vector<vector<int>> nodos_fichero(tam);
 
     int_aux = tam;
 
@@ -62,11 +54,12 @@ int main (int argc, char** argv)      //pongo char** para que almacene los nombr
       int_dummy += int_aux;
     }
 
-    vector<int> vector_int_aux(int_dummy);    //Vector que almacena los datos del fichero de datos
+    vector_int_aux.resize(int_dummy);    //Vector que almacena los datos del fichero de datos
+    vector_heuristica.resize(tam);
 
     while(!graph_file.eof())
     {
-      getline(graph_file, graph_line, ' ');       //Solo cogemos los datos hasta un espacio
+      getline(graph_file, graph_line);       //Solo cogemos los datos hasta un espacio
       if(graph_line.size() > 0)
       {
         if(graph_line[0] == '\n')
@@ -74,7 +67,9 @@ int main (int argc, char** argv)      //pongo char** para que almacene los nombr
 
         for(int i = 0; i < graph_line.size(); i++)
         {
-          if(isdigit(graph_line[i]))                //Comprobamos si el valor es numerico para eliminar cualquier otro valor que no sea un número
+          if(i == 0 && (graph_line[i] == '-' || isdigit(graph_line[i])))
+            graph_line_fixed.push_back(graph_line[i]);
+          else if(isdigit(graph_line[i]))                //Comprobamos si el valor es numerico para eliminar cualquier otro valor que no sea un número
           {
             graph_line_fixed.push_back(graph_line[i]);
           }
@@ -94,12 +89,68 @@ int main (int argc, char** argv)      //pongo char** para que almacene los nombr
 
         // cout << "Valor en entero: " << int_aux << endl;
 
-        getline(graph_file, graph_line);      //Desechamos el resto de datos de la linea.
+        // getline(graph_file, graph_line);      //Desechamos el resto de datos de la linea.
         graph_line_fixed.clear();             //Vaciamos el string para la siguiente ejecución, ya que usamos push back
       }
     }
 
-    // nodos_fichero = formatear_vector(vector_int_aux, tam);
+    graph_file.close();
+
+    cont = 0;
+
+    while(!heuristic_file.eof())
+    {
+      getline(heuristic_file, heuristic_line);       //Solo cogemos los datos hasta un espacio
+      if(heuristic_line.size() > 0)
+      {
+        if(heuristic_line[0] == '\n')
+          heuristic_line = heuristic_line.erase(0, 1);        //Eliminanmos el retorno de carro
+
+        for(int i = 0; i < heuristic_line.size(); i++)
+        {
+          if(isdigit(heuristic_line[i]))                //Comprobamos si el valor es numerico para eliminar cualquier otro valor que no sea un número
+          {
+            heuristic_line_fixed.push_back(heuristic_line[i]);
+          }
+        }
+
+        int_aux = stoi(heuristic_line_fixed);         //Convertimos el valor del string a un entero
+
+        vector_heuristica[cont] = int_aux;         //Insertamos al vector el valor numérico.
+        cont++;                                   //Aumentamos el contador del vector
+
+        heuristic_line_fixed.clear();             //Vaciamos el string para la siguiente ejecución, ya que usamos push back
+      }
+    }
+
+    heuristic_file.close();
+
+    return 0;
+  }
+  else
+  {
+    cout << "Los tamaños entre los ficheros no coinciden" << endl;
+    return 1;
+  }
+}
+
+int main (int argc, char** argv)      //pongo char** para que almacene los nombres correctamente
+{
+  cout << "Bienvenido" << endl;
+
+  ifstream graph_file(argv[1]);
+  ifstream heuristic_file(argv[2]);                       //Variables con los ficheros
+  int tam = 0, check = 0;
+  vector<int> vector_int_aux;     //Vector que almacena los datos del fichero de costes
+  vector<int> vector_heuristica;  //Vector que almacena los datos del fichero de heuristica
+
+  if(graph_file.is_open() && heuristic_file.is_open())        //Comprobar que el fichero este abierto
+  {
+    check = leer_ficheros(graph_file, heuristic_file, tam, vector_int_aux, vector_heuristica);
+    if(check == 1)    //si devuelve 1, el numero de nodos especificado en cada fichero es diferente
+      return 1;
+
+    vector<vector<int>> nodos_fichero(tam, vector<int>(tam - 1));
     formatear_vector(vector_int_aux, nodos_fichero, tam);
 
     // cout << endl << endl;
@@ -136,12 +187,13 @@ int main (int argc, char** argv)      //pongo char** para que almacene los nombr
       return 1;
     }
 
-    arbol_t Grafo_busqueda(nodos_fichero, tam, ini, fin);
+    astar_t A_estrella(nodos_fichero, vector_heuristica, tam, ini, fin);
+    A_estrella.write(cout);
 
   }
   else
   {
-    cout << "No se pudo abrir el fichero: " << argv[1];
+    cout << "No se pudo abrir el fichero: " << argv[1] << endl;
     return 1;
   }
 
