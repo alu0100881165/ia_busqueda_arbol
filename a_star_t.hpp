@@ -2,6 +2,8 @@
 
 #include "arbol_t.hpp"
 
+#include <algorithm>
+
 class astar_t
 {
   private:
@@ -13,7 +15,8 @@ class astar_t
     astar_t();
     astar_t(vector<vector<int>> &vector_formateado, vector<int> &vector_heuristico, int size, int ini, int fin);
 
-    void busqueda(void);
+    int busqueda(void);
+    // void generar_hijos(node_t *actual, vector<node_t*> &lista_abierta);
 
     ostream& write(ostream& os);
 };

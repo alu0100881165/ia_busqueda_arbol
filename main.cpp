@@ -1,7 +1,6 @@
 #include "a_star_t.hpp"
 #include <fstream>
 #include <locale>
-#include <algorithm>
 
 using namespace std;
 
@@ -189,6 +188,8 @@ int main (int argc, char** argv)      //pongo char** para que almacene los nombr
 
     astar_t A_estrella(nodos_fichero, vector_heuristica, tam, ini, fin);
     A_estrella.write(cout);
+
+    A_estrella.busqueda();
 
   }
   else

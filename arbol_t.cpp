@@ -21,11 +21,13 @@ arbol_t::arbol_t(vector<vector<int>> &vector_formateado, vector<int> &vector_heu
   for(int i = 0; i < size; i++)     //for para crear todos los nodos con su nombre correspondiente
   {
     dummy = new node_t((i + 1), vector_heuristico[i]);
-    vector_dummy.push_back(dummy);
-    if(i == ini)
+    if((i + 1) == ini)
     {
-      vector_dummy[i]->set_padre(NULL);
+      cout << "Nombre nodo: " << dummy->get_name() << endl;
+      set_nodo_arbol(dummy);
+      dummy->set_padre(NULL);
     }
+    vector_dummy.push_back(dummy);
   }
 
   for(int i = 0; i < vector_formateado.size(); i++)           //recorremos el vetor_formateado para almacenar sus valores en los nodos correspondientes
