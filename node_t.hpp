@@ -40,6 +40,7 @@ class node_t
     int get_coste_acumulado(void);
     int get_coste_acumulado(void) const;
     void set_coste_acumulado(int coste);
+    void set_coste_acumulado_to_value(int coste);
 
     int get_coste_f_total(void);
     int get_coste_f_total(void) const;

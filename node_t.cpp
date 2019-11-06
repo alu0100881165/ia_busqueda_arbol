@@ -88,6 +88,11 @@ void node_t::set_coste_acumulado(int coste)
   coste_acumulado_ += coste;
 }
 
+void node_t::set_coste_acumulado_to_value(int coste)
+{
+  coste_acumulado_ = coste;
+}
+
 int node_t::get_coste_f_total(void)
 {
   return coste_f_total_;
