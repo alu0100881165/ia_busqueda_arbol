@@ -7,7 +7,7 @@ arbol_t::arbol_t()
 
 arbol_t::arbol_t(vector<vector<int>> &vector_formateado, vector<int> &vector_heuristico, int size, int ini, int fin)
 {
-  cout << "Entro arbol constructor." << endl;
+  // cout << "Entro arbol constructor." << endl;
 
   if(size > 0)        //comprobar que hay nodos que leer
     set_size(size);
@@ -23,7 +23,7 @@ arbol_t::arbol_t(vector<vector<int>> &vector_formateado, vector<int> &vector_heu
     dummy = new node_t((i + 1), vector_heuristico[i]);
     if((i + 1) == ini)
     {
-      cout << "Nombre nodo: " << dummy->get_name() << endl;
+      // cout << "Nombre nodo: " << dummy->get_name() << endl;
       set_nodo_arbol(dummy);
       dummy->set_padre(NULL);
     }

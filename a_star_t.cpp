@@ -36,13 +36,13 @@ int astar_t::busqueda(void)
       current = get_lowest_f();
     }
     nodos_inspeccionados_++;
-    cout << "El nodo seleccionado es: " << current->get_name() << endl;
-    cout << "Contenido de la open list: " << endl;
-    for(int i = 0; i < open_list_.size(); i++)
-    {
-      cout << '\t' << open_list_[i]->get_name() << ' ' << open_list_[i]->get_coste_acumulado() << endl;
-    }
-    cout << endl;
+    // cout << "El nodo seleccionado es: " << current->get_name() << endl;
+    // cout << "Contenido de la open list: " << endl;
+    // for(int i = 0; i < open_list_.size(); i++)
+    // {
+    //   cout << '\t' << open_list_[i]->get_name() << ' ' << open_list_[i]->get_coste_acumulado() << endl;
+    // }
+    // cout << endl;
 
     open_list_.erase(open_list_.begin() + get_open_list_pos(current));
     closed_list_.push_back(current);
@@ -58,11 +58,11 @@ int astar_t::busqueda(void)
     for(int i = 0; i < current->get_next_nodes_size(); i++)
     {
       nodos_generados_++;
-      cout << "Iteramos sus hijos." << endl;
-      cout << "hijo: " << current->get_next_node_pos(i)->get_name() << endl;
+      // cout << "Iteramos sus hijos." << endl;
+      // cout << "hijo: " << current->get_next_node_pos(i)->get_name() << endl;
       tentative_cost = current->get_coste_acumulado() + current->get_next_node_cost_pos(i);
-      cout << "Coste tentativo: " << tentative_cost << endl;
-      cout << "Coste movimiento del nodo: " << current->get_next_node_cost_pos(i) << endl;
+      // cout << "Coste tentativo: " << tentative_cost << endl;
+      // cout << "Coste movimiento del nodo: " << current->get_next_node_cost_pos(i) << endl;
       if(find(open_list_.begin(), open_list_.end(), current->get_next_node_pos(i)) != open_list_.end())   //comprobamos si existe el nodo en la open list
       {
         // cout << "holi1" << endl;
@@ -98,11 +98,10 @@ int astar_t::busqueda(void)
       current->get_next_node_pos(i)->set_coste_acumulado(tentative_cost);
       current->get_next_node_pos(i)->set_padre(current);
       current->get_next_node_pos(i)->set_coste_f_total();
-      cout << "El padre es: " << current->get_next_node_pos(i)->get_padre()->get_name() << endl;
-      cout << "Coste de actual a hijo: " << current->get_next_node_cost_pos(i) << endl;
-      cout << "Coste heurístico: " << current->get_next_node_pos(i)->get_coste_heuristico() << endl;
-      cout << "Valor f: " << current->get_next_node_pos(i)->get_coste_f_total() << endl;
-      getchar();
+      // cout << "El padre es: " << current->get_next_node_pos(i)->get_padre()->get_name() << endl;
+      // cout << "Coste de actual a hijo: " << current->get_next_node_cost_pos(i) << endl;
+      // cout << "Coste heurístico: " << current->get_next_node_pos(i)->get_coste_heuristico() << endl;
+      // cout << "Valor f: " << current->get_next_node_pos(i)->get_coste_f_total() << endl;
     }
   }
   // cout << "Estoy acabando." << endl;

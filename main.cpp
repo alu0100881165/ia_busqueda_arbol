@@ -153,15 +153,15 @@ int main (int argc, char** argv)      //pongo char** para que almacene los nombr
     formatear_vector(vector_int_aux, nodos_fichero, tam);
 
     // cout << endl << endl;
-    cout << "Contenido de nodos_fichero: " << endl;
-    for(int i = 0; i < nodos_fichero.size(); i++)
-    {
-      for(int j = 0; j < nodos_fichero[i].size(); j++)
-      {
-        cout << nodos_fichero[i][j] << '|';
-      }
-      cout << endl;
-    }
+    // cout << "Contenido de nodos_fichero: " << endl;
+    // for(int i = 0; i < nodos_fichero.size(); i++)
+    // {
+    //   for(int j = 0; j < nodos_fichero[i].size(); j++)
+    //   {
+    //     cout << nodos_fichero[i][j] << '|';
+    //   }
+    //   cout << endl;
+    // }
 
     cout << endl << endl;
 
